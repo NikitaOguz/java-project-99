@@ -12,6 +12,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 
+import hexlet.code.util.ModelGenerator;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
@@ -25,8 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import hexlet.code.util.ModelGenerator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

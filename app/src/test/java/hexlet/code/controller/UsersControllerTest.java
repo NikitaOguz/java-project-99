@@ -199,7 +199,7 @@ public class UsersControllerTest {
 
     @Test
     public void testShow() throws Exception {
-        vvar result = mockMvc.perform(get("/api/users/" + testUser.getId()).with(token))
+        var result = mockMvc.perform(get("/api/users/" + testUser.getId()).with(token))
                 .andExpect(status().isOk())
                 .andReturn();
 

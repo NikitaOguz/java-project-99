@@ -89,5 +89,12 @@ sonar {
 	properties {
 		property("sonar.projectKey", "NikitaOguz_java-project-99")
 		property("sonar.organization", "nikitoguzkov")
+
+		property(
+			"sonar.coverage.exclusions",
+			"**/dto/**," +
+					"**/model/**," +
+					"**/Application.java"
+		)
 	}
 }

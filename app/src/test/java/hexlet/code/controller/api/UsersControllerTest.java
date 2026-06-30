@@ -171,7 +171,30 @@ public class UsersControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    void testLogin() throws Exception {
+        var data = new HashMap<>();
+        data.put("username", testUser.getEmail());
+        data.put("password", "password");
 
+        mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(data)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(emptyString())));
+    }
+
+    @Test
+    void testLoginWithWrongPassword() throws Exception {
+        var data = new HashMap<>();
+        data.put("username", testUser.getEmail());
+        data.put("password", "wrong-password");
+
+        mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(data)))
+                .andExpect(status().isUnauthorized());
+    }
     @Test
     public void testUpdateUser() throws Exception {
 

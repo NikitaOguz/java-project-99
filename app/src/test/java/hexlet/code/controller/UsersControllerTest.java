@@ -97,7 +97,7 @@ public class UsersControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var response = mockMvc.perform(get("/api/users")) //.with(jwt()))
+        var response = mockMvc.perform(get("/api/users").with(jwt()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -199,10 +199,10 @@ public class UsersControllerTest {
 
     @Test
     public void testShow() throws Exception {
-        var result = mockMvc.perform(get("/api/users/" + testUser.getId()))
+        var result = mockMvc.perform(get("/api/users/" + testUser.getId())
+                        .with(jwt()))
                 .andExpect(status().isOk())
-                .andReturn();
-        //.getResponse(); //.with(jwt());
+                .andReturn().getResponse();
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(

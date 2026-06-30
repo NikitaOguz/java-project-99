@@ -199,10 +199,9 @@ public class UsersControllerTest {
 
     @Test
     public void testShow() throws Exception {
-        var result = mockMvc.perform(get("/api/users/" + testUser.getId())
-                        .with(jwt()))
+        vvar result = mockMvc.perform(get("/api/users/" + testUser.getId()).with(token))
                 .andExpect(status().isOk())
-                .andReturn().getResponse();
+                .andReturn();
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(

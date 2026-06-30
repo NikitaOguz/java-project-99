@@ -1,15 +1,18 @@
 package hexlet.code.mapper;
 
-import hexlet.code.model.BaseEntity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.TargetType;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+import hexlet.code.model.BaseEntity;
+import jakarta.persistence.EntityManager;
+
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING
+)
 public abstract class ReferenceMapper {
-    @PersistenceContext
+    @Autowired
     private EntityManager entityManager;
 
     public <T extends BaseEntity> T toEntity(Long id, @TargetType Class<T> entityClass) {

@@ -1,34 +1,41 @@
 package hexlet.code.service;
 
-import hexlet.code.dto.UserCreateDTO;
-import hexlet.code.dto.UserDTO;
-import hexlet.code.dto.UserUpdateDTO;
+import hexlet.code.dto.user.UserCreateDTO;
+import hexlet.code.dto.user.UserDTO;
+import hexlet.code.dto.user.UserUpdateDTO;
+import hexlet.code.exception.ResourceDeletionException;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import hexlet.code.exception.ResourceNotFoundException;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private UserMapper userMapper;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private TaskRepository taskRepository;
 
     public List<UserDTO> index() {
         var users = userRepository.findAll();
-        return users.stream()
-                .map(userMapper::map)
+        var ret = users.stream()
+                .map((user) -> userMapper.map(user))
                 .toList();
+        return ret;
     }
     public UserDTO show(long id) {
         var user = userRepository.findById(id)
@@ -41,14 +48,13 @@ public class UserService {
         newUser.setPasswordDigest(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(newUser);
 
-        System.out.println("!!!!!!!! cr !!!!!!!!!" + newUser + " cr !!!!!!!!");
         return userMapper.map(newUser);
     }
     public UserDTO update(long id, UserUpdateDTO dto) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
         userMapper.update(dto, user);
-        if (dto.getPassword() != null) {
+        if (dto.getPassword() != null && dto.getPassword().isPresent()) {
             user.setPasswordDigest(passwordEncoder.encode(dto.getPassword().get()));
         }
         userRepository.save(user);
@@ -56,6 +62,16 @@ public class UserService {
     }
 
     public void delete(long id) {
+        if (taskRepository.existsByAssigneeId(id)) {
+            throw new ResourceDeletionException("Нельзя удалить пользователя, у него есть задача");
+        }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return user;
     }
 }

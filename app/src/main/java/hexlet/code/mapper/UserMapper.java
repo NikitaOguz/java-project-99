@@ -1,5 +1,6 @@
 package hexlet.code.mapper;
 
+import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -8,9 +9,12 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import hexlet.code.model.User;
-import hexlet.code.dto.UserDTO;
-import hexlet.code.dto.UserCreateDTO;
-import hexlet.code.dto.UserUpdateDTO;
+
+import hexlet.code.dto.user.UserDTO;
+import hexlet.code.dto.user.UserCreateDTO;
+import hexlet.code.dto.user.UserUpdateDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Mapper(
         uses = { JsonNullableMapper.class },
@@ -20,6 +24,9 @@ import hexlet.code.dto.UserUpdateDTO;
 )
 
 public abstract class UserMapper {
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @Mapping(target = "passwordDigest", source = "password")
     public abstract User map(UserCreateDTO user);
 
@@ -32,4 +39,9 @@ public abstract class UserMapper {
 
     public abstract void update(UserUpdateDTO userUpdateDTO, @MappingTarget User user);
 
+    @BeforeMapping
+    public void encryptPassword(UserCreateDTO data) {
+        var password = data.getPassword();
+        data.setPassword(encoder.encode(password));
+    }
 }

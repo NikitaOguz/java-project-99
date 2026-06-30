@@ -5,6 +5,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,8 +32,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(includeFieldNames = true, onlyExplicitlyIncluded = false)
 public class User implements UserDetails, BaseEntity {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
@@ -48,7 +49,6 @@ public class User implements UserDetails, BaseEntity {
     private String lastName;
 
     @NotBlank
-    @NotNull
     private String passwordDigest;
 
     @CreatedDate

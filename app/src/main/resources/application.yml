@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem

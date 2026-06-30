@@ -1,13 +1,25 @@
 plugins {
-	java
-	id("org.springframework.boot") version "4.0.6"
-	id("io.spring.dependency-management") version "1.1.7"
-	id("org.sonarqube") version "7.3.1.8318"
+	application
+	checkstyle
 	jacoco
+	id("org.springframework.boot") version "3.5.6"
+	id("io.spring.dependency-management") version "1.1.7"
+	id("io.freefair.lombok") version "8.6"
+	id("org.sonarqube") version "7.3.1.8318"
 }
 
 group = "hexlet.code"
 version = "0.0.1-SNAPSHOT"
+
+application {
+	mainClass.set("hexlet.code.Application")
+}
+
+tasks.jacocoTestReport {
+	reports {
+		xml.required.set(true)
+	}
+}
 
 java {
 	toolchain {
@@ -20,23 +32,37 @@ repositories {
 }
 
 dependencies {
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	implementation("org.springframework.boot:spring-boot-starter")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.springframework.security:spring-security-test")
+
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+
+	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
+	implementation("org.instancio:instancio-junit:5.0.2")
+	implementation("net.javacrumbs.json-unit:json-unit-assertj:4.0.0")
+	implementation("net.datafaker:datafaker:2.4.3")
+
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
+	implementation("org.mapstruct:mapstruct:1.6.3")
+
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter")
+
+	runtimeOnly("com.h2database:h2")
+	runtimeOnly("org.postgresql:postgresql")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-tasks.jacocoTestReport {
-	dependsOn(tasks.test)
-
-	reports {
-		xml.required.set(true)
-		html.required.set(true)
-	}
 }
 sonar {
 	properties {

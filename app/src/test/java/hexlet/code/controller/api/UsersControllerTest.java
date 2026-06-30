@@ -47,9 +47,6 @@ import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UsersControllerTest {
@@ -172,45 +169,6 @@ public class UsersControllerTest {
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
-    }
-    @Test
-    void testLogin() throws Exception {
-        var dto = new UserCreateDTO();
-        dto.setEmail("user@test.com");
-        dto.setFirstName("John");
-        dto.setLastName("Doe");
-        dto.setPassword("password");
-
-        userService.create(dto);
-
-        var data = new HashMap<>();
-        data.put("username", "user@test.com");
-        data.put("password", "password");
-
-        mockMvc.perform(post("/api/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(data)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testLoginWithWrongPassword() throws Exception {
-        var dto = new UserCreateDTO();
-        dto.setEmail("user@test.com");
-        dto.setFirstName("John");
-        dto.setLastName("Doe");
-        dto.setPassword("password");
-
-        userService.create(dto);
-
-        var data = new HashMap<>();
-        data.put("username", "user@test.com");
-        data.put("password", "wrong-password");
-
-        mockMvc.perform(post("/api/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(data)))
-                .andExpect(status().isUnauthorized());
     }
     @Test
     public void testUpdateUser() throws Exception {

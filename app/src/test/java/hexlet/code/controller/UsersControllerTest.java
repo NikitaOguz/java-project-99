@@ -97,7 +97,7 @@ public class UsersControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var response = mockMvc.perform(get("/api/users").with(token)
+        var response = mockMvc.perform(get("/api/users").with(token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();

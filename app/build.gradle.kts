@@ -62,7 +62,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	implementation("org.mapstruct:mapstruct:1.6.3")
-	implementation("io.sentry:sentry-spring-boot-starter-jakarta:8.46.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -75,14 +74,16 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 sentry {
-	// Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
-	// This enables source context, allowing you to see your source
-	// code as part of your stack traces in Sentry.
-	includeSourceContext = true
+	includeSourceContext = System.getenv("SENTRY_AUTH_TOKEN") != null
 
 	org = "java-project-99"
 	projectName = "java"
 	authToken = System.getenv("SENTRY_AUTH_TOKEN")
+}
+tasks.named("sentryUploadSourceBundleJava") {
+	onlyIf {
+		System.getenv("SENTRY_AUTH_TOKEN") != null
+	}
 }
 sonar {
 	properties {

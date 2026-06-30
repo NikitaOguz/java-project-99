@@ -171,8 +171,8 @@ public class UsersControllerTest {
                 .andReturn();
         var user = userRepository.findById(testUser.getId()).orElse(null);
         assertNotNull(user);
-        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
-        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
+        assertThat(user.getFirstName()).isEqualTo(data.get("firstName"));
+        assertThat(user.getLastName()).isEqualTo(data.get("lastName"));
         assertThat(user.getEmail()).isEqualTo(data.get("email"));
     }
 
@@ -192,8 +192,8 @@ public class UsersControllerTest {
                 .andReturn();
         var user = userRepository.findById(testUser.getId()).orElse(null);
         assertNotNull(user);
-        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
-        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
+        assertThat(user.getFirstName()).isEqualTo(data.get("firstName"));
+        assertThat(user.getLastName()).isEqualTo(data.get("lastName"));
         assertThat(user.getEmail()).isEqualTo(data.get("email"));
     }
 

@@ -171,8 +171,8 @@ public class UsersControllerTest {
                 .andReturn();
         var user = userRepository.findById(testUser.getId()).orElse(null);
         assertNotNull(user);
-        assertThat(user.getFirstName()).isEqualTo(data.get("firstName"));
-        assertThat(user.getLastName()).isEqualTo(data.get("lastName"));
+        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
+        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
         assertThat(user.getEmail()).isEqualTo(data.get("email"));
     }
 
@@ -213,7 +213,8 @@ public class UsersControllerTest {
     @Test
     public void testDeleteUser() throws Exception {
 
-        mockMvc.perform(delete("/api/users/" + testUser.getId()))
+        mockMvc.perform(delete("/api/users/" + testUser.getId())
+                        .with(token))
                 .andExpect(status().isNoContent());
 
         var user = userRepository.findById(testUser.getId()).orElse(null);

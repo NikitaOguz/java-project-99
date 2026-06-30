@@ -15,9 +15,17 @@ application {
 	mainClass.set("hexlet.code.Application")
 }
 
+tasks.test {
+	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
+}
+
 tasks.jacocoTestReport {
+	dependsOn(tasks.test)
+
 	reports {
 		xml.required.set(true)
+		html.required.set(true)
 	}
 }
 
@@ -33,7 +41,6 @@ repositories {
 
 dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.springframework.security:spring-security-test")
 
@@ -45,14 +52,11 @@ dependencies {
 	implementation("net.datafaker:datafaker:2.4.3")
 
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	implementation("org.mapstruct:mapstruct:1.6.3")
 
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter")

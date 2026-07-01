@@ -4,7 +4,7 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "4.1.0"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("io.freefair.lombok") version "9.5.0"
+	id("io.freefair.lombok") version "8.14.2"
 	id("org.sonarqube") version "7.3.1.8318"
 	id("io.sentry.jvm.gradle") version "6.13.0"
 }
@@ -17,8 +17,8 @@ application {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {

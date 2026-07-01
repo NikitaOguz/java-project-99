@@ -1,11 +1,11 @@
-FROM gradle:9.1.0-jdk21
+FROM gradle:9.1.0-jdk25
 
 ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
 
 WORKDIR /
 
-COPY . .
+COPY / .
 
 RUN ./gradlew installDist
 

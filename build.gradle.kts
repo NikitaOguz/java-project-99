@@ -2,7 +2,7 @@ plugins {
 	application
 	checkstyle
 	jacoco
-	id("org.springframework.boot") version "4.1.0"
+	id("org.springframework.boot") version "3.5.6"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("io.freefair.lombok") version "8.14.2"
 	id("org.sonarqube") version "7.3.1.8318"
@@ -17,8 +17,9 @@ application {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_25
-	targetCompatibility = JavaVersion.VERSION_25
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	}
 }
 
 repositories {
@@ -32,6 +33,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
@@ -78,6 +81,9 @@ sonar {
 	properties {
 		property("sonar.projectKey", "NikitaOguz_java-project-99")
 		property("sonar.organization", "nikitoguzkov")
-		property("sonar.coverage.exclusions", "**/dto/**,** /model/**,** /Application.java")
+		property(
+			"sonar.coverage.exclusions",
+			"**/dto/**,**/model/**,**/Application.java"
+		)
 	}
 }

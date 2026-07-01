@@ -6,6 +6,7 @@ import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,6 +15,8 @@ class ModelGeneratorTest {
 
     @Autowired
     private ModelGenerator modelGenerator;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void testUserModel() {
@@ -34,5 +37,11 @@ class ModelGeneratorTest {
         assertThat(status.getId()).isNull();
         assertThat(status.getName()).isNotBlank();
         assertThat(status.getSlug()).isNotBlank();
+    }
+    @Test
+    void testPasswordEncoded() {
+        User user = Instancio.of(modelGenerator.getUserModel()).create();
+
+        assertThat(passwordEncoder.matches("password", user.getPasswordDigest())).isTrue();
     }
 }

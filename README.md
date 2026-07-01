@@ -40,6 +40,11 @@
 - **Email:** `hexlet@example.com`
 - **Пароль:** `qwerty`
 
+## Полезные ссылки
+
+- [OpenAPI спецификация (Swagger UI)](https://your-app.onrender.com/swagger-ui.html)
+- [Вызвать тестовую ошибку (Sentry)](https://your-app.onrender.com/sentry-test)
+
 ---
 
 ## Быстрый старт

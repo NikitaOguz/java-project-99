@@ -1,22 +1,16 @@
-setup:
-	cd code && ../gradlew wrapper --gradle-version 9.5.0
-
 clean:
-	cd code && ../gradlew clean
-
-build:
-	cd code && ../gradlew clean build
-
+	./gradlew clean
 run:
-	cd code && ../gradlew bootRun
-
-test:
-	cd code && ../gradlew test
-
-report:
-	cd code && ../gradlew jacocoTestReport
-
+	./gradlew run
+build:
+	./gradlew clean build
+install:
+	./gradlew installDist
 lint:
-	cd code && ../gradlew checkstyleMain
+	./gradlew checkstyleMain
+test:
+	./gradlew test
+report:
+	./gradlew jacocoTestReport
 
-.PHONY: setup clean build run test report lint
+.PHONY: build

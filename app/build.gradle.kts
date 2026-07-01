@@ -1,8 +1,3 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-}
 plugins {
 	application
 	checkstyle
@@ -21,6 +16,46 @@ application {
 	mainClass.set("hexlet.code.Application")
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot starters
+	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+	// Mapping & utilities
+	implementation("org.mapstruct:mapstruct:1.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+
+	// OpenAPI / Testing / Utils
+	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
+	implementation("org.instancio:instancio-junit:5.0.2")
+	implementation("net.javacrumbs.json-unit:json-unit-assertj:4.0.0")
+	implementation("net.datafaker:datafaker:2.4.3")
+
+	// Databases
+	runtimeOnly("com.h2database:h2")
+	runtimeOnly("org.postgresql:postgresql")
+
+	// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
 tasks.test {
 	useJUnitPlatform()
 	finalizedBy(tasks.jacocoTestReport)
@@ -35,56 +70,17 @@ tasks.jacocoTestReport {
 	}
 }
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
-}
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation("org.junit.jupiter:junit-jupiter")
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
-
-	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
-	implementation("org.instancio:instancio-junit:5.0.2")
-	implementation("net.javacrumbs.json-unit:json-unit-assertj:4.0.0")
-	implementation("net.datafaker:datafaker:2.4.3")
-
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-
-	implementation("org.mapstruct:mapstruct:1.6.3")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter")
-
-	runtimeOnly("com.h2database:h2")
-	runtimeOnly("org.postgresql:postgresql")
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
 sentry {
 	includeSourceContext = System.getenv("SENTRY_AUTH_TOKEN") != null
-
 	org = "java-project-99"
 	projectName = "java"
 	authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
+
 tasks.named("sentryUploadSourceBundleJava") {
-	onlyIf {
-		System.getenv("SENTRY_AUTH_TOKEN") != null
-	}
+	onlyIf { System.getenv("SENTRY_AUTH_TOKEN") != null }
 }
+
 sonar {
 	properties {
 		property("sonar.projectKey", "NikitaOguz_java-project-99")
@@ -92,9 +88,7 @@ sonar {
 
 		property(
 			"sonar.coverage.exclusions",
-			"**/dto/**," +
-					"**/model/**," +
-					"**/Application.java"
+			"**/dto/**,** /model/**,** /Application.java"
 		)
 	}
 }

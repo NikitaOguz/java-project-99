@@ -21,6 +21,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+// аутентификация с JSON Web Token ------------------------------------------------------
     @PostMapping("/login")
     public String create(@RequestBody AuthRequest authRequest) {
         var authentication = new UsernamePasswordAuthenticationToken(

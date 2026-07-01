@@ -4,8 +4,8 @@ import hexlet.code.dto.task.TaskCreateDTO;
 import hexlet.code.dto.task.TaskDTO;
 import hexlet.code.dto.task.TaskParamsDTO;
 import hexlet.code.dto.task.TaskUpdateDTO;
-import hexlet.code.service.TaskService;
 
+import hexlet.code.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,12 +30,13 @@ public class TaskController {
 
     private TaskService taskService;
 
+ //GET /api/tasks/{id} ----------------------------------------
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO show(@PathVariable Long id) {
         return taskService.show(id);
     }
-
+//GET /api/tasks  ----------------------------------------
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
@@ -44,19 +45,20 @@ public class TaskController {
                 .header("X-Total-Count", String.valueOf(result.size()))
                 .body(result);
     }
-
+// POST /api/tasks  ----------------------------------------
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@RequestBody @Valid TaskCreateDTO dto) {
         return taskService.create(dto);
     }
 
+// PUT /api/tasks/{id}  ----------------------------------------
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO update(@PathVariable Long id, @RequestBody @Valid TaskUpdateDTO dto) {
         return taskService.update(id, dto);
     }
-
+// DELETE /api/tasks/{id}  ----------------------------------------
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

@@ -11,8 +11,8 @@ import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-
 import hexlet.code.util.ModelGenerator;
+
 import org.instancio.Instancio;
 
 import org.junit.jupiter.api.AfterEach;
@@ -111,6 +111,7 @@ public class TaskControllerTest {
         testTask.setAssignee(internalUser);
         testTask.setTaskStatus(testTaskStatus);
         testTask.setLabels(labelSet);
+        // taskRepository.save(testTask);
         token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
     }
 
@@ -154,6 +155,7 @@ public class TaskControllerTest {
         assertNotNull(taskStatus);
         assertThat(taskStatus.getIndex()).isEqualTo(data.getIndex());
         assertThat(taskStatus.getAssignee().getId()).isEqualTo(data.getAssigneeId().get());
+       // assertThat(taskStatus.getName()).isEqualTo(data.getTitle());
         assertThat(taskStatus.getDescription()).isEqualTo(data.getContent());
         assertThat(taskStatus.getTaskStatus().getSlug()).isEqualTo(data.getStatus());
     }
@@ -197,7 +199,7 @@ public class TaskControllerTest {
         assertThat(taskStatus.getDescription()).isEqualTo(data.getContent());
         assertThat(taskStatus.getTaskStatus().getSlug()).isEqualTo(data.getStatus());
     }
-
+// частичное обновление, только title -----------------
     @Test
     public void testPartUpdateTask() throws Exception {
         taskRepository.save(testTask);
@@ -220,6 +222,7 @@ public class TaskControllerTest {
 
         assertThat(taskNew.getIndex()).isEqualTo(data.getIndex());
         assertThat(taskNew.getAssignee().getId()).isEqualTo(data.getAssigneeId().get());
+       // assertThat(taskNew.getName()).isEqualTo(updateData.get("title"));
         assertThat(taskNew.getDescription()).isEqualTo(data.getContent());
         assertThat(taskNew.getTaskStatus().getSlug()).isEqualTo(data.getStatus());
     }
@@ -253,6 +256,7 @@ public class TaskControllerTest {
         assertThat(task).isNull();
     }
 
+// вывод тасков по фильтру, фильтр по части title --------------
     @Test
     public void testIndexTaskTitleCont() throws Exception {
         String findString = "first_string";
@@ -272,18 +276,21 @@ public class TaskControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
 
+// должен содержать title который мы ищем --------------------------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element1 ->  assertThatJson(element1)
                         .and(v -> v.node("title").asString()
                                 .contains(findString)));
+
+// а второй записи с несовпадающим titile быть не должно -------------------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element2 -> assertThatJson(element2)
                         .and(v -> v.node("title").asString()
                                 .doesNotContain(otherString)));
     }
-
+// вывод тасков по фильтру, фильтр по AssigneeId --------------
     @Test
     public void testIndexTaskAssigneeId() throws Exception {
         taskRepository.save(testTask);
@@ -304,6 +311,7 @@ public class TaskControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
 
+// ответ должен содержать исковый id юзера ---------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element1 ->  assertThatJson(element1)
@@ -311,6 +319,7 @@ public class TaskControllerTest {
                         .asNumber()
                         .isEqualTo(BigDecimal.valueOf(firstId)));
 
+// и не должен содержать id другого юзера из базы ---------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element2 -> assertThatJson(element2)
@@ -319,6 +328,7 @@ public class TaskControllerTest {
                         .isNotEqualTo(BigDecimal.valueOf(secondId)));
     }
 
+// поиск по Slug статуса таска ----------------
     @Test
     public void testIndexTaskByStatus() throws Exception {
         String findString = testTask.getTaskStatus().getSlug();
@@ -339,19 +349,21 @@ public class TaskControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
 
+// искомый slug должен быть в ответе -----------------------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element1 ->  assertThatJson(element1)
                         .and(v -> v.node("status").asString()
                                 .contains(findString)));
 
+// а другой slug не должен попасть в ответ если фильтр работает -------------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element2 -> assertThatJson(element2)
                         .and(v -> v.node("status").asString()
                                 .doesNotContain(otherString)));
     }
-
+// то же самое фильтр по label ---------------------
     @Test
     public void testIndexTaskByLabel() throws Exception {
         Long firstId = testLabel.getId();
@@ -373,6 +385,7 @@ public class TaskControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
 
+// должен быть только искомый лэйбл в ответе ----------------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element1 ->  assertThatJson(element1)
@@ -380,6 +393,7 @@ public class TaskControllerTest {
                         .isArray()
                         .contains(BigDecimal.valueOf(firstId)));
 
+// а другой лэйбл не должен попасть в ответ ----------------
         assertThatJson(body)
                 .isArray()
                 .allSatisfy(element2 -> assertThatJson(element2)
@@ -388,6 +402,7 @@ public class TaskControllerTest {
                         .doesNotContain(BigDecimal.valueOf(otherId)));
     }
 
+// тест если запрос был без авторизации --------------------------------
     @Test
     public void testUnAuthIndexTask() throws Exception {
         taskRepository.save(testTask);

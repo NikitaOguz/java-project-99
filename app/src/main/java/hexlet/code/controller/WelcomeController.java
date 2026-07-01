@@ -1,18 +1,18 @@
 package hexlet.code.controller;
 
-import io.sentry.Sentry;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import io.sentry.Sentry;
 
 @RestController
 public class WelcomeController {
 
-    @GetMapping("/welcome")
+    @GetMapping(path = "/welcome")
     public String welcome() {
         return "Welcome to Spring!";
     }
 
-    @GetMapping("/test")
+    @GetMapping(path = "/test")
     public void testErrorNext() {
         try {
             throw new Exception("This is a test.");
@@ -21,4 +21,3 @@ public class WelcomeController {
         }
     }
 }
-

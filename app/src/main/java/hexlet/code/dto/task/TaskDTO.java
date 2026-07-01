@@ -1,4 +1,5 @@
 package hexlet.code.dto.task;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;

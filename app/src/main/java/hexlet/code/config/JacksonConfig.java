@@ -22,8 +22,11 @@ public class JacksonConfig {
     Jackson2ObjectMapperBuilder objectMapperBuilder() {
         var builder = new Jackson2ObjectMapperBuilder();
 
+// свой формат даты
         var dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  // модуль Jackson
         var javaTimeModule = new JavaTimeModule();
+ // мои сериализатор и десериализатор
         javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
 

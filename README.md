@@ -23,7 +23,7 @@
 
 **Backend:**
 - **Java 21**
-- **Spring Boot **
+- **Spring Boot**
 - **Spring Data JPA**
 - **Spring Security** (с JWT-аутентификацией)
 - **Hibernate**

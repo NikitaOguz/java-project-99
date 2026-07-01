@@ -2,7 +2,7 @@ plugins {
 	application
 	checkstyle
 	jacoco
-	id("org.springframework.boot") version "4.1.0"
+	id("org.springframework.boot") version "3.5.6"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("io.freefair.lombok") version "8.14.2"
 	id("org.sonarqube") version "7.3.1.8318"
@@ -14,6 +14,12 @@ version = "0.0.1-SNAPSHOT"
 
 application {
 	mainClass.set("hexlet.code.Application")
+}
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(25))
+	}
 }
 
 repositories {

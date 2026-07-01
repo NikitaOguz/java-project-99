@@ -73,7 +73,6 @@ public class LabelControllerTest {
     private Label testLabel;
     private Task testTask;
 
-// перед тестами чистим репозиторий, настраиваем MockMvc, делаем тестовый лэйбл и получаем токен дефаултного юзера
     @BeforeEach
     public void setUp() {
         labelRepository.deleteAll();
@@ -89,7 +88,6 @@ public class LabelControllerTest {
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
     }
 
-// прочищаем все репозитории после каждого теста --------------
     @AfterEach
     public void garbageDbDelete() {
         taskRepository.deleteAll();
@@ -156,7 +154,7 @@ public class LabelControllerTest {
         var label = labelRepository.findById(testLabel.getId()).orElse(null);
         assertThat(label).isNull();
     }
-// тест на неправильное (слишком короткое) имя ------------------------------
+
     @Test
     public void testCreateNoValidShortLabel() throws Exception {
         var data = labelMapper.map(testLabel);
@@ -166,11 +164,10 @@ public class LabelControllerTest {
                 .with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
-// должен вернуться код 400 ----
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
-// тест на удаление связанного с каким то таском лейбла -------------------------------
+
     @Test
     public void testDeleteJoinLabel() throws Exception {
         labelRepository.save(testLabel);
@@ -188,7 +185,7 @@ public class LabelControllerTest {
         testTask2.setLabels(labelSet);
 
         taskRepository.save(testTask2);
-// должен вернуться код 400 ----
+
         mockMvc.perform(delete("/api/labels/" + testLabel.getId()).with(token))
                 .andExpect(status().isBadRequest());
     }

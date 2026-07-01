@@ -21,26 +21,25 @@ public class LabelService {
     private LabelRepository labelRepository;
     private TaskRepository taskRepository;
 
-//GET /api/labels/{id}
     public LabelDTO show(Long id) {
         return labelMapper.map(labelRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label not found")));
     }
-//GET /api/labels
+
     public List<LabelDTO> showAll() {
         var labels = labelRepository.findAll();
         return labels.stream()
                 .map(labelMapper::map)
                 .toList();
     }
-//POST /api/labels
+
     public LabelDTO create(LabelCreateDTO labelDTO) {
         return labelMapper.map(
                 labelRepository.save(
                         labelMapper.map(labelDTO)));
     }
-//PUT /api/labels/{id}
+
     public LabelDTO update(long id, LabelUpdateDTO dto) {
         var label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label not found"));
@@ -48,7 +47,7 @@ public class LabelService {
         labelRepository.save(label);
         return labelMapper.map(label);
     }
-//DELETE /api/labels/{id}
+
     public void delete(long id) {
         var label = labelRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Label not found"));

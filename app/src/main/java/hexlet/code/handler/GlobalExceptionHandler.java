@@ -1,6 +1,5 @@
 package hexlet.code.handler;
 
-
 import hexlet.code.exception.ResourceDeletionException;
 import hexlet.code.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

@@ -20,16 +20,11 @@ import java.util.List;
 @AllArgsConstructor
 public class DataInitializer {
 
-  //  @Autowired
     private UserRepository userRepository;
-  //  @Autowired
     private PasswordEncoder passwordEncoder;
-  //  @Autowired
     private TaskStatusRepository taskStatusRepository;
-  //  @Autowired
     private LabelRepository labelRepository;
 
-// юзер по умолчанию hexlet@example.com qwerty ----------------------------------------
     @PostConstruct
     public void initializeUsers() {
         if (userRepository.findByEmail("hexlet@example.com").isEmpty()) {
@@ -39,7 +34,6 @@ public class DataInitializer {
             userRepository.save(user);
         }
     }
-// Статусы тасков при старте ----------------------------------------------------------
     @PostConstruct
     public void initializeTaskStatuses() {
         List<String> statuses = Arrays.asList("draft", "to_review", "to_be_fixed", "to_publish", "published");
@@ -53,7 +47,6 @@ public class DataInitializer {
             });
         });
     }
-// Метки при старте ----------------------------------------------------------------
     @PostConstruct
     public void initializeLabels() {
         List<String> labels = Arrays.asList("feature", "bug");

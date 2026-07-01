@@ -1,6 +1,5 @@
 package hexlet.code.controller.api;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -85,7 +84,7 @@ public class TaskStatusControllerTest {
 
         taskStatusRepository.save(testTaskStatus);
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
-      //  token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
+
     }
 
     @AfterEach
@@ -127,7 +126,6 @@ public class TaskStatusControllerTest {
         assertThat(tsakStatus.getName()).isEqualTo(data.getName());
     }
 
-// тест на создание статуса с неправильным отсутствующим slug -------------
     @Test
     public void testCreateNoValidSlugPTaskStatus() throws Exception {
 
@@ -140,7 +138,7 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
-// тест на создание статуса с неправильным отсутствующим именем  -------------
+
     @Test
     public void testCreateNoValidNamePTaskStatus() throws Exception {
         var data = taskStatusMapper.map(Instancio.of(modelGenerator.getTaskStatusModel()).create());
@@ -171,12 +169,11 @@ public class TaskStatusControllerTest {
         assertThat(taskStatus.getSlug()).isEqualTo(data.getSlug());
     }
 
-//  частичное обновление только slug меняем -----------------
     @Test
     public void testPartUpdateTaskStatus() throws Exception {
 
         var data = new HashMap<>();
-       // data.put("name", faker.lorem().words(2));
+
         data.put("slug", faker.lorem().words(2).stream()
                 .map(w -> w.toLowerCase().replaceAll("[^a-z0-9]", ""))
                 .collect(Collectors.joining("_")));

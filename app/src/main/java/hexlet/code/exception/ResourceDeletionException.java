@@ -9,3 +9,4 @@ public class ResourceDeletionException extends RuntimeException {
         super(message);
     }
 }
+

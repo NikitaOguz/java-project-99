@@ -30,13 +30,12 @@ public class TaskStatusController {
 
     private TaskStatusService taskStatusService;
 
-//GET /api/task_statuses/{id}  ----------------------------------------
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskStatusDTO show(@PathVariable long id) {
         return taskStatusService.show(id);
     }
-//GET /api/task_statuses  ----------------------------------------
+
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskStatusDTO>> index() {
@@ -45,19 +44,19 @@ public class TaskStatusController {
                 .header("X-Total-Count", String.valueOf(result.size()))
                 .body(result);
     }
-//POST /api/task_statuses ----------------------------------------
+
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskStatusDTO create(@RequestBody @Valid TaskStatusCreateDTO createDTO) {
         return taskStatusService.create(createDTO);
     }
-//PUT /api/task_statuses/{id}  ----------------------------------------
+
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskStatusDTO update(@PathVariable Long id, @RequestBody @Valid TaskStatusUpdateDTO updateDTO) {
         return taskStatusService.update(id, updateDTO);
     }
-//DELETE /api/task_statuses/{id}  ----------------------------------------
+
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {

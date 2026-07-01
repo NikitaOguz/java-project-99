@@ -1,6 +1,5 @@
 package hexlet.code.mapper;
 
-
 import hexlet.code.dto.task.TaskStatusCreateDTO;
 import hexlet.code.dto.task.TaskStatusDTO;
 

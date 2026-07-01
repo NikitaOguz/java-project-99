@@ -19,7 +19,6 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import hexlet.code.service.UserService;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -30,24 +29,19 @@ public class SecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-   // @Autowired
-  //  private CustomUserDetailsService userService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-        // разрешенный доступ к основному
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/welcome").permitAll()
                         .requestMatchers("/test").permitAll()
-        // разрешенный доступ для фронтэнда
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/assets/**").permitAll()
-        // разрешенный доступ для Swagger
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -65,8 +59,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider daoAuthProvider(PasswordEncoder passwordEncoder,
-                                                         UserService userService) {
+    public AuthenticationProvider daoAuthProvider(PasswordEncoder passwordEncoder, UserService userService) {
         var provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
         provider.setPasswordEncoder(passwordEncoder);

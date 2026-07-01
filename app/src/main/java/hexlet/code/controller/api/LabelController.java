@@ -28,13 +28,12 @@ public class LabelController {
 
     private LabelService labelService;
 
-// GET /api/labels/{id}  --------------------------------------------
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public LabelDTO show(@PathVariable Long id) {
         return labelService.show(id);
     }
-// GET /api/labels  -------------------------------------------------
+
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<LabelDTO>> showAll() {
@@ -43,19 +42,19 @@ public class LabelController {
                 .header("X-Total-Count", String.valueOf(result.size()))
                 .body(result);
     }
-// POST /api/labels -----------------------------------------------
+
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public LabelDTO create(@RequestBody @Valid LabelCreateDTO label) {
         return labelService.create(label);
     }
-// PUT /api/labels/{id}
+
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public LabelDTO update(@PathVariable Long id, @RequestBody @Valid LabelUpdateDTO label) {
         return labelService.update(id, label);
     }
-// DELETE /api/labels/{id}
+
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

@@ -144,7 +144,6 @@ public class UsersControllerTest {
         assertThat(user.getLastName()).isEqualTo(data.getLastName().get());
     }
 
-// тест на создание пользователя с невалидным коротким именем -----------------------
     @Test
     public void testNoValidPasswordCreateUser() throws Exception {
         var data = new HashMap<>();
@@ -159,7 +158,6 @@ public class UsersControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-// тест на создание пользователя с невалидным email -----------------------
     @Test
     public void testNoValidEmailCreateUser() throws Exception {
         var data = new HashMap<>();
@@ -196,12 +194,10 @@ public class UsersControllerTest {
         assertThat(user.getEmail()).isEqualTo(data.get("email"));
     }
 
-// частичное обновление только email -------------------
     @Test
     public void testPartUpdateUser() throws Exception {
         var data = new HashMap<>();
-      //  data.put("firstName", faker.name().firstName());
-      //  data.put("lastName", faker.name().lastName());
+
         data.put("email", faker.internet().emailAddress());
         var request = put("/api/users/" + testUser.getId())
                 .with(token)
@@ -242,7 +238,7 @@ public class UsersControllerTest {
         assertThat(user).isNull();
     }
 
-// тест на удаление юзера который связан с задачей -----------------
+
     @Test
     public void testDeleteJoinUser() throws Exception {
 
@@ -260,12 +256,11 @@ public class UsersControllerTest {
         testTask.setLabels(labelSet);
         taskRepository.save(testTask);
 
-// должна быть ошибка 400 -------------
+
         mockMvc.perform(delete("/api/users/" + testUser.getId()).with(token))
                 .andExpect(status().isBadRequest());
     }
 
-// удаление другого одного юзера другим юзером ---------------
     @Test
     public void testDeleteUnAuthenticUser() throws Exception {
         var oldTestUserId = testUser.getId();
@@ -274,7 +269,6 @@ public class UsersControllerTest {
         userRepository.save(testUser);
         token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
 
-// должна быть ошибка 403
         mockMvc.perform(delete("/api/users/" + oldTestUserId)
                         .with(token))
                 .andExpect(status().isForbidden());

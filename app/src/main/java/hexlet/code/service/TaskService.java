@@ -23,13 +23,13 @@ public class TaskService {
     private TaskMapper taskMapper;
     private TaskSpecification specBuilder;
 
-//GET /api/tasks/{id}
+
     public TaskDTO show(Long id) {
         return taskMapper.map(taskRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found")));
     }
-// GET /api/tasks
+
     public List<TaskDTO> index(TaskParamsDTO params) {
         var spec = specBuilder.build(params);
         var allTask = taskRepository.findAll(spec);
@@ -38,13 +38,13 @@ public class TaskService {
                 .toList();
 
     }
-// POST /api/tasks
+
     public TaskDTO create(TaskCreateDTO taskCreateDTO) {
         var task = taskMapper.map(taskCreateDTO);
         taskRepository.save(task);
         return taskMapper.map(task);
     }
-//PUT /api/tasks/{id}
+
     public TaskDTO update(long id, TaskUpdateDTO taskUpdateDTO) {
         var task = taskRepository
                 .findById(id)
@@ -53,7 +53,7 @@ public class TaskService {
         taskRepository.save(task);
         return taskMapper.map(task);
     }
-// DELETE /api/tasks/{id}
+
     public void delete(Long id) {
         taskRepository.deleteById(id);
     }

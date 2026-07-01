@@ -27,7 +27,6 @@ repositories {
 }
 
 dependencies {
-	// Spring Boot starters
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -35,21 +34,17 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
-	// Mapping & utilities
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 
-	// OpenAPI / Testing / Utils
 	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 	implementation("org.instancio:instancio-junit:5.0.2")
 	implementation("net.javacrumbs.json-unit:json-unit-assertj:4.0.0")
 	implementation("net.datafaker:datafaker:2.4.3")
 
-	// Databases
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
 
-	// Test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.junit.jupiter:junit-jupiter")
@@ -63,7 +58,6 @@ tasks.test {
 
 tasks.jacocoTestReport {
 	dependsOn(tasks.test)
-
 	reports {
 		xml.required.set(true)
 		html.required.set(true)
@@ -85,10 +79,6 @@ sonar {
 	properties {
 		property("sonar.projectKey", "NikitaOguz_java-project-99")
 		property("sonar.organization", "nikitoguzkov")
-
-		property(
-			"sonar.coverage.exclusions",
-			"**/dto/**,** /model/**,** /Application.java"
-		)
+		property("sonar.coverage.exclusions", "**/dto/**,** /model/**,** /Application.java")
 	}
 }

@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: app
+
   profiles:
     active: dev
 
@@ -7,14 +10,15 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    output:
-      ANSI:
-        enabled: always
+
+  output:
+    ansi:
+      enabled: always
 
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
 
 sentry:
-  dsn: https://87444bfc3622787d0bbc9fb2b89c6307@o4509350427295744.ingest.us.sentry.io/4509350461898752
+  dsn: https://f5c0d176d7c67ea7a90e4903386d9cd3@o4511656490631168.ingest.de.sentry.io/4511656504328272
   send-default-pii: true

@@ -50,7 +50,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UsersControllerTest {
+public class UsersControllerTest extends BaseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -87,9 +87,6 @@ public class UsersControllerTest {
 
     @BeforeEach
     public void setUp() {
-        taskRepository.deleteAll();
-        taskStatusRepository.deleteAll();
-        userRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
@@ -100,13 +97,6 @@ public class UsersControllerTest {
         userRepository.save(testUser);
 
         token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
-    }
-
-    @AfterEach
-    public void garbageDbDelete() {
-        taskRepository.deleteAll();
-        taskStatusRepository.deleteAll();
-        userRepository.deleteAll();
     }
 
     @Test

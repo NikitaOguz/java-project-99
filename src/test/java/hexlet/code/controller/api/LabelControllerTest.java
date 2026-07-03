@@ -40,7 +40,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LabelControllerTest {
+public class LabelControllerTest extends BaseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -75,10 +75,6 @@ public class LabelControllerTest {
 
     @BeforeEach
     public void setUp() {
-        labelRepository.deleteAll();
-        taskRepository.deleteAll();
-        taskStatusRepository.deleteAll();
-        userRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
@@ -88,12 +84,6 @@ public class LabelControllerTest {
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
     }
 
-    @AfterEach
-    public void garbageDbDelete() {
-        taskRepository.deleteAll();
-        taskStatusRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     @Test
     public void testIndexLabel() throws Exception {

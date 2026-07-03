@@ -1,6 +1,5 @@
 package hexlet.code.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,27 +11,31 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import hexlet.code.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtDecoder jwtDecoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final JwtDecoder jwtDecoder;
+    private final PasswordEncoder passwordEncoder;
 
+    public SecurityConfig(JwtDecoder jwtDecoder,
+                          PasswordEncoder passwordEncoder) {
+        this.jwtDecoder = jwtDecoder;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            HandlerMappingIntrospector introspector) throws Exception {
 
         return http
                 .csrf(csrf -> csrf.disable())
@@ -47,26 +50,26 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(rs ->
+                        rs.jwt(jwt -> jwt.decoder(jwtDecoder)))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http)
+            throws Exception {
+
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .build();
     }
 
     @Bean
-    public AuthenticationProvider daoAuthProvider(
-            PasswordEncoder passwordEncoder,
-            UserService userService) {
-
-        var provider = new DaoAuthenticationProvider(userService);
+    public AuthenticationProvider daoAuthProvider(UserDetailsService userDetailsService) {
+        var provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
-
 }

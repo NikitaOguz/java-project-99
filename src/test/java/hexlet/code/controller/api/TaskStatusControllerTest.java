@@ -45,7 +45,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskStatusControllerTest {
+public class TaskStatusControllerTest extends BaseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +73,6 @@ public class TaskStatusControllerTest {
 
     @BeforeEach
     public void setUp() {
-        taskStatusRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
@@ -87,10 +86,6 @@ public class TaskStatusControllerTest {
 
     }
 
-    @AfterEach
-    public void garbageDbDelete() {
-        taskStatusRepository.deleteAll();
-    }
 
     @Test
     public void testIndexTaskStatus() throws Exception {

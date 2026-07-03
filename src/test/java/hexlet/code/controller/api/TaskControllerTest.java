@@ -15,7 +15,6 @@ import hexlet.code.util.ModelGenerator;
 
 import org.instancio.Instancio;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +46,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskControllerTest extends BaseControllerTest {
+public class TaskControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -84,6 +83,9 @@ public class TaskControllerTest extends BaseControllerTest {
 
     @BeforeEach
     public void setUp() {
+        taskRepository.deleteAll();
+        taskStatusRepository.deleteAll();
+        userRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)

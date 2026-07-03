@@ -8,13 +8,13 @@ import hexlet.code.model.TaskStatus;
 
 import hexlet.code.dto.task.TaskStatusDTO;
 
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 
 import hexlet.code.util.ModelGenerator;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskStatusControllerTest extends BaseControllerTest {
+public class TaskStatusControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,11 +68,17 @@ public class TaskStatusControllerTest extends BaseControllerTest {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
+    @Autowired
+    private TaskRepository taskRepository;
+
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
     private TaskStatus testTaskStatus;
 
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        taskRepository.deleteAll();
+        taskStatusRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
@@ -80,10 +86,9 @@ public class TaskStatusControllerTest extends BaseControllerTest {
                 .build();
 
         testTaskStatus = Instancio.of(modelGenerator.getTaskStatusModel()).create();
-
         taskStatusRepository.save(testTaskStatus);
-        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
 
+        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
     }
 
 

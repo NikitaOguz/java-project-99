@@ -10,81 +10,106 @@
 
 ## О проекте
 
-Приложение представляет собой REST API для управления задачами с возможностью регистрации и авторизации пользователей. 
+Приложение представляет собой REST API для управления задачами с возможностью регистрации и авторизации пользователей.
 
 ### Основные возможности
+
 - Создание, просмотр, редактирование и удаление задач
 - Назначение задач исполнителям
 - Фильтрация и поиск задач
 - Управление статусами и метками задач
 - Авторизация и разграничение прав доступа
 
-## Технологии и инструменты
+## Технологии
 
-**Backend:**
-- **Java 21**
-- **Spring Boot**
-- **Spring Data JPA**
-- **Spring Security** (с JWT-аутентификацией)
-- **Hibernate**
+### Backend
 
-**Базы данных:**
-- **H2** — для локальной разработки и тестов
-- **PostgreSQL** — в продакшен-окружении
+- Java 25
+- Spring Boot
+- Spring Data JPA
+- Spring Security (JWT)
+- Hibernate
+
+### Базы данных
+
+- H2 — локальная разработка и тестирование
+- PostgreSQL — production
 
 ## Доступ к приложению
 
-Проект задеплоен и доступен по ссылке: **[→ Открыть приложение](https://java-project-99-g09l.onrender.com)**
+Проект задеплоен на Render:
 
-**Тестовая учётная запись:**
-- **Email:** `hexlet@example.com`
-- **Пароль:** `qwerty`
+https://java-project-99-g09l.onrender.com
+
+### Тестовая учетная запись
+
+| Поле | Значение |
+|------|----------|
+| Email | `hexlet@example.com` |
+| Пароль | `qwerty` |
 
 ## Полезные ссылки
 
-- [OpenAPI спецификация (Swagger UI)](https://your-app.onrender.com/swagger-ui.html)
-- [Вызвать тестовую ошибку (Sentry)](https://your-app.onrender.com/sentry-test)
-
----
+- Swagger UI: https://java-project-99-g09l.onrender.com/swagger-ui.html
+- Sentry test: https://java-project-99-g09l.onrender.com/sentry-test
 
 ## Быстрый старт
 
-1. Клонируйте репозиторий:
+### Клонирование
 
-   ```bash
-   git clone https://github.com/ArturStimbiris/java-project-99.git
-   cd java-project-99
-2. Запустите приложение:
+```bash
+git clone https://github.com/NikitaOguz/java-project-99.git
+cd java-project-99
+```
+
+### Запуск
+
 ```bash
 ./gradlew bootRun
 ```
-3. Приложение будет доступно по адресу:
-```bash
+
+После запуска приложение будет доступно по адресу:
+
+```
 http://localhost:8080
 ```
-API
 
-Аутентификация
+## API
 
-POST /api/login — Авторизация пользователя
+### Аутентификация
 
-Пользователи
+| Метод | Endpoint | Описание |
+|--------|----------|----------|
+| POST | `/api/login` | Авторизация пользователя |
 
-GET /api/users — Получить список пользователей
-POST /api/users — Создать нового пользователя
-GET /api/users/{id} — Получить пользователя по ID
+### Пользователи
 
-Задачи
+| Метод | Endpoint | Описание |
+|--------|----------|----------|
+| GET | `/api/users` | Получить список пользователей |
+| POST | `/api/users` | Создать пользователя |
+| GET | `/api/users/{id}` | Получить пользователя по ID |
 
-GET /api/tasks — Получить список задач (с фильтрами)
-GET /api/tasks/{id} — Получить задачу по ID
-POST /api/tasks — Создать новую задачу
-PUT /api/tasks/{id} — Обновить задачу
-DELETE /api/tasks/{id} — Удалить задачу
+### Задачи
 
-Справочники
+| Метод | Endpoint | Описание |
+|--------|----------|----------|
+| GET | `/api/tasks` | Получить список задач |
+| GET | `/api/tasks/{id}` | Получить задачу по ID |
+| POST | `/api/tasks` | Создать задачу |
+| PUT | `/api/tasks/{id}` | Обновить задачу |
+| DELETE | `/api/tasks/{id}` | Удалить задачу |
 
-GET /api/task_statuses — Получить список статусов
-POST /api/task_statuses — Создать статус
-GET /api/labels — Получить список меток
-POST /api/labels — Создать метку
+### Статусы
+
+| Метод | Endpoint | Описание |
+|--------|----------|----------|
+| GET | `/api/task_statuses` | Получить список статусов |
+| POST | `/api/task_statuses` | Создать статус |
+
+### Метки
+
+| Метод | Endpoint | Описание |
+|--------|----------|----------|
+| GET | `/api/labels` | Получить список меток |
+| POST | `/api/labels` | Создать метку |

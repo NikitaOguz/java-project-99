@@ -282,4 +282,5 @@ public class UsersControllerTest {
         assertThat(updatedUser.getPasswordDigest())
                 .isNotEqualTo(testUser.getPasswordDigest());
     }
+
 }

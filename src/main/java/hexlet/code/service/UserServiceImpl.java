@@ -3,10 +3,8 @@ package hexlet.code.service;
 import hexlet.code.dto.user.UserCreateDTO;
 import hexlet.code.dto.user.UserDTO;
 import hexlet.code.dto.user.UserUpdateDTO;
-import hexlet.code.exception.ResourceDeletionException;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
-import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +19,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final TaskRepository taskRepository;
 
     @Override
     public List<UserDTO> index() {
@@ -34,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO show(long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return userMapper.map(user);
     }
@@ -54,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO update(long id, UserUpdateDTO dto) {
 
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         userMapper.update(dto, user);
 
@@ -69,12 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
 
-        if (taskRepository.existsByAssigneeId(id)) {
-            throw new ResourceDeletionException(
-                    "Нельзя удалить пользователя, у него есть задача");
-        }
-
-        userRepository.deleteById(id);
+        userRepository.delete(user);
     }
 }

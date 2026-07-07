@@ -13,6 +13,5 @@ public class LabelUpdateDTO {
 
     @NotNull
     @Size(min = 3, max = 1000)
-    @Column(unique = true)
     private JsonNullable<String> name;
 }

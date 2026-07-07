@@ -1,21 +1,25 @@
 package hexlet.code.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import hexlet.code.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import hexlet.code.repository.UserRepository;
 
 @Component
+@RequiredArgsConstructor
 public class UserUtils {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public boolean isAuthor(long userId) {
-        var userAuthorEmail = userRepository.findById(userId).get().getEmail();
+        var user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User with id " + userId + " not found"));
+
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        return userAuthorEmail.equals(authentication.getName());
+        return user.getEmail().equals(authentication.getName());
     }
 }
 

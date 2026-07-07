@@ -57,6 +57,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void delete(Long id) {
-        taskRepository.deleteById(id);
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        taskRepository.delete(task);
     }
 }

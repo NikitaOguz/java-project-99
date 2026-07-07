@@ -3,10 +3,8 @@ package hexlet.code.service;
 import hexlet.code.dto.task.TaskStatusCreateDTO;
 import hexlet.code.dto.task.TaskStatusDTO;
 import hexlet.code.dto.task.TaskStatusUpdateDTO;
-import hexlet.code.exception.ResourceDeletionException;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
-import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +17,11 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     private final TaskStatusRepository taskStatusRepository;
     private final TaskStatusMapper taskStatusMapper;
-    private final TaskRepository taskRepository;
 
     @Override
     public TaskStatusDTO show(long id) {
         var taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found"));
         return taskStatusMapper.map(taskStatus);
     }
 
@@ -46,7 +43,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     @Override
     public TaskStatusDTO update(long id, TaskStatusUpdateDTO dto) {
         var status = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found"));
 
         taskStatusMapper.update(dto, status);
         taskStatusRepository.save(status);
@@ -57,13 +54,8 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     @Override
     public void delete(long id) {
         var status = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found"));
 
-        if (taskRepository.existsByTaskStatus(status)) {
-            throw new ResourceDeletionException(
-                    "Нельзя удалить статус, он связан с задачей");
-        }
-
-        taskStatusRepository.deleteById(id);
+        taskStatusRepository.delete(status);
     }
 }

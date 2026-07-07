@@ -16,7 +16,6 @@ public class TaskStatusDTO {
     @NotBlank
     private String name;
 
-    @Column(unique = true)
     @NotBlank
     private String slug;
 

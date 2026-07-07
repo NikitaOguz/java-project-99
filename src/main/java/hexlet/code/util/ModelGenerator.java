@@ -6,6 +6,7 @@ import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Model;
@@ -18,17 +19,16 @@ import java.util.stream.Collectors;
 
 @Getter
 @Component
+@RequiredArgsConstructor
 public class ModelGenerator {
+
+    private final Faker faker;
+    private final PasswordEncoder passwordEncoder;
 
     private Model<User> userModel;
     private Model<TaskStatus> taskStatusModel;
     private Model<Task> taskModel;
     private Model<Label> labelModel;
-
-    @Autowired
-    private Faker faker;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     private void init() {

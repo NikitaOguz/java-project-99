@@ -265,4 +265,21 @@ public class UsersControllerTest {
                         .with(token))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void testUpdatePassword() throws Exception {
+        var data = new HashMap<>();
+        data.put("password", "newPassword123");
+
+        mockMvc.perform(put("/api/users/" + testUser.getId())
+                        .with(token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(data)))
+                .andExpect(status().isOk());
+
+        var updatedUser = userRepository.findById(testUser.getId()).orElseThrow();
+
+        assertThat(updatedUser.getPasswordDigest())
+                .isNotEqualTo(testUser.getPasswordDigest());
+    }
 }
